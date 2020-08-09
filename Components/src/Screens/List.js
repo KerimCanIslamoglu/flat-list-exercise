@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, KeyboardAvoidingView } from 'react-native';
 import { connect, useDispatch } from 'react-redux'
+import {getList} from '../actions'
 
 import Input from '../../Input'
 import Button from '../../Button'
@@ -13,13 +14,9 @@ const List=(props)=> {
     const [data, setData] = useState([])
 
 
-    // useEffect(() => {
-    //     if (props.route.params?.obj) {
-    //         let arr = data.slice()
-    //         arr.push(props.route.params?.obj)
-    //         setData(arr)
-    //     }
-    // }, [props.route.params?.obj])
+    useEffect(() => {
+      props.getList();
+    }, [])
 
     const renderItem = ({ item }) => (
         <View style={styles.item}>
@@ -83,4 +80,4 @@ const mapStateToProps=(state)=>{
     return {list};
 }
 
-export default connect(mapStateToProps,{})(List);
+export default connect(mapStateToProps,{getList})(List);

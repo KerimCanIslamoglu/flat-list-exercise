@@ -6,7 +6,9 @@ import Button from '../../Button'
 
 import { connect, useDispatch } from 'react-redux';
 
-import { UPDATE_LIST, LOADING_START, LOADING_END } from '../actions/types'
+import {  LOADING_START, LOADING_END } from '../actions/types'
+
+import {updateList} from '../actions'
 
 
 
@@ -14,8 +16,6 @@ import { UPDATE_LIST, LOADING_START, LOADING_END } from '../actions/types'
 const CreateList = (props) => {
     const [title, setTitle] = useState('')
     const [description, setDescription] = useState('')
-
-    const dispatch = useDispatch();
 
     return (
         <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{ flex: 1 }}>
@@ -29,14 +29,15 @@ const CreateList = (props) => {
                     onChangeText={(value) => setDescription(value)}
                 />
                 <Button text={'Add'} onPress={() => {
-                    dispatch({ type: LOADING_START })
+                    // dispatch({ type: LOADING_START })
                     let obj = {
                         title: title,
                         description: description
                     }
-                    dispatch({ type: UPDATE_LIST, payload: obj })
-                    setTimeout(function(){
-                        dispatch({ type: LOADING_END })}, 5000)
+                    props.updateList(obj);
+                    // dispatch({ type: UPDATE_LIST, payload: obj })
+                    // setTimeout(function(){
+                    //     dispatch({ type: LOADING_END })}, 5000)
 
                     props.navigation.navigate('List');
                 }} />
@@ -80,4 +81,4 @@ const mapStateToProps = ({ listResponse }) => {
     return { list };
 };
 
-export default connect(mapStateToProps, {})(CreateList);
+export default connect(mapStateToProps, {updateList})(CreateList);

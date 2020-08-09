@@ -1,4 +1,6 @@
-import { UPDATE_LIST, LOADING_START, LOADING_END } from '../actions/types'
+import { UPDATE_LIST, LOADING_START, LOADING_END, SET_LIST, ADD_LIST_LOCAL } from '../actions/types'
+
+import AsyncStorage from '@react-native-community/async-storage'
 
 const INITIAL_STATE = {
     list: [],
@@ -11,6 +13,9 @@ export default (state = INITIAL_STATE, action) => {
             const obj = action.payload;
             let arr = state.list.slice();
             arr.push(obj);
+
+            AsyncStorage.setItem(ADD_LIST_LOCAL, JSON.stringify(arr))
+
 
             return {
                 ...state,
@@ -29,6 +34,13 @@ export default (state = INITIAL_STATE, action) => {
             return {
                 ...state,
                 loader: false,
+            };
+
+        case SET_LIST:
+
+            return {
+                ...state,
+                list: action.payload,
             };
 
         default:
