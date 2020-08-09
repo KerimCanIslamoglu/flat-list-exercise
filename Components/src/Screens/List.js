@@ -1,24 +1,25 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, Text, View, SafeAreaView, FlatList, KeyboardAvoidingView } from 'react-native';
+import { connect, useDispatch } from 'react-redux'
 
 import Input from '../../Input'
 import Button from '../../Button'
 
 
-export default function List(props) {
+const List=(props)=> {
 
 
     const [data, setData] = useState([])
 
 
-    useEffect(() => {
-        if (props.route.params?.obj) {
-            let arr = data.slice()
-            arr.push(props.route.params?.obj)
-            setData(arr)
-        }
-    }, [props.route.params?.obj])
+    // useEffect(() => {
+    //     if (props.route.params?.obj) {
+    //         let arr = data.slice()
+    //         arr.push(props.route.params?.obj)
+    //         setData(arr)
+    //     }
+    // }, [props.route.params?.obj])
 
     const renderItem = ({ item }) => (
         <View style={styles.item}>
@@ -31,7 +32,7 @@ export default function List(props) {
         <SafeAreaView style={styles.container}>
             <KeyboardAvoidingView behavior={Platform.OS == "ios" ? "padding" : "height"} style={{ flex: 1 }}>
                 <FlatList style={styles.list}
-                    data={data}
+                    data={props.list}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     ListHeaderComponent={() => {
@@ -76,3 +77,10 @@ const styles = StyleSheet.create({
 
     }
 });
+
+const mapStateToProps=(state)=>{
+    const {list}=state.listResponse;
+    return {list};
+}
+
+export default connect(mapStateToProps,{})(List);
